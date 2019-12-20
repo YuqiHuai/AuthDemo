@@ -1,0 +1,27 @@
+version: "3"
+services:
+  app:
+    container_name: auth-client
+    restart: always
+    build: 
+      context: ./server
+    ports:
+      - "80:3000"
+    volumes: 
+      - ./server:/app
+    links:
+      - mongo
+    networks:
+      - auth
+  mongo:
+    container_name: auth-db
+    image: mongo
+    volumes: 
+      - ./data:/data/db
+    ports:
+      - "27018:27017"
+    networks:
+      - auth
+networks:
+  auth:
+    driver: bridge
